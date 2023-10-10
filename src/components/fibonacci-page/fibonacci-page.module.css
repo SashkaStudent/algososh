@@ -1,0 +1,23 @@
+.wrapper {
+	box-sizing: border-box;
+	margin: 0 auto;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	width: 522px;
+}
+
+.form {
+	display: flex;
+	gap: 12px;
+}
+
+.circles {
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: center;
+	padding: 48px;
+	column-gap: 16px;
+	row-gap: 48px;
+	width: 944px;
+}
