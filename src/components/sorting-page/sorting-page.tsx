@@ -54,7 +54,7 @@ export const SortingPage: React.FC = () => {
       setTimeout(() => {
         setColumns([...array]);
         resolve(true);
-      }, 500);
+      }, ms);
 
     });
 

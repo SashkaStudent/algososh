@@ -27,13 +27,13 @@ export const StackPage: React.FC = () => {
       setTimeout(() => {
         setCircles([...array]);
         resolve(true);
-      }, 500);
+      }, ms);
 
     });
 
   }
 
-    const stack = new Stack<string>();
+  const stack = new Stack<string>();
 
   const handleAdd = async ()=>{
     stack.push(values['string']);
