@@ -28,8 +28,6 @@ export const FibonacciPage: React.FC = () => {
 const getFibonacciNumbers = (n: number): number[] => {
   const numbers: number[] = [1,1];
   for (let i = 2; i < n; i++) {
-    //if(i<=2) numbers[i-1] = 1;
-    //else
          numbers[i] = numbers[i - 1] + numbers[i - 2];
   }
   return numbers;
@@ -47,7 +45,6 @@ const begin = async (e:React.FormEvent<HTMLFormElement>) =>{
 
   fib(parseInt(values["number"]), nums);
   
-  console.log(getFibonacciNumbers(parseInt(values["number"])));
   const getWithDelay = async (i:number) => new Promise<{val: number, key: number}>((resolve)=>{
     setTimeout(()=>{
       resolve({val:nums.get(i)!, key:i!});
