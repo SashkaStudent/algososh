@@ -29,6 +29,7 @@ export const SortingPage: React.FC = () => {
 
   useEffect(() => {
     setValues({ sortType: SortType.select });
+    makeNewArray();
   }, []);
 
 

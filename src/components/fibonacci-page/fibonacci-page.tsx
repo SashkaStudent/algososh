@@ -9,7 +9,7 @@ import styles from './fibonacci-page.module.css';
 
 export const FibonacciPage: React.FC = () => {
 
-  const {values, handleChange} = useFormAndValidation();
+  const {values, isValid , handleChange} = useFormAndValidation();
   const [loader, setLoader] = useState(false);
   const [circles, setCircles] = useState<number[]>([]);
 
@@ -79,7 +79,7 @@ const begin = async (e:React.FormEvent<HTMLFormElement>) =>{
               text = "Рассчитать"
               type = "submit"
               isLoader = { loader }
-              disabled = { false }
+              disabled = { !isValid }
         />
         </form>
         <div className = { styles.circles }>

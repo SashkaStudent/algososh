@@ -14,9 +14,16 @@ interface IStringStatePair {
   state: ElementStates;
 }
 
+enum Job {
+  none,
+  add,
+  remove
+}
+
 export const StackPage: React.FC = () => {
 
   const { values, handleChange, setValues } = useFormAndValidation();
+  const [currentJob, setCurrentJob] = useState<Job>(Job.none);
   const [circles, setCircles] = useState<IStringStatePair[]>([])
 
   useEffect(()=> setValues({string:""}),[])
@@ -36,6 +43,7 @@ export const StackPage: React.FC = () => {
   const stack = new Stack<string>();
 
   const handleAdd = async ()=>{
+    setCurrentJob(Job.add)
     stack.push(values['string']);
     setValues({string:""})
     circles.push({
@@ -45,20 +53,27 @@ export const StackPage: React.FC = () => {
     await setCirclesWithDelay([...circles],0);
     circles[circles.length-1].state = ElementStates.Default;
     await setCirclesWithDelay([...circles]);
+    setCurrentJob(Job.none)
 
   }
 
   const handleRemove = async ()=>{
+    setCurrentJob(Job.remove)
+
     circles[circles.length-1].state = ElementStates.Changing;
     setCircles([...circles]);
     stack.pop();
     circles.pop();
     await setCirclesWithDelay([...circles]);
+    setCurrentJob(Job.none)
+
   }
   
   const handleClear = ()=>{
     stack.clear();
     setCircles([]);
+    setCurrentJob(Job.none)
+
   }
 
 
@@ -67,9 +82,9 @@ export const StackPage: React.FC = () => {
       <div className={styles.wrapper}>
         <form className={styles.form} onSubmit={(e)=>{e.preventDefault(); values['string'].length > 0 && handleAdd()}}>
           <Input isLimitText maxLength={4} name='string' onChange={handleChange} value={values['string']??''} placeholder="Введите текст" />
-          <Button disabled={values['string'] === ''} onClick={handleAdd} type="button" text="Добавить" />
-          <Button disabled={circles.length==0} onClick={handleRemove} type="button" text="Удалить" />
-          <Button disabled={circles.length==0} onClick={handleClear} type="button" text="Очистить" />
+          <Button disabled={values['string'] === '' || currentJob != Job.none && currentJob != Job.add} onClick={handleAdd} isLoader={currentJob == Job.add} type="button" text="Добавить" />
+          <Button disabled={circles.length==0 || currentJob != Job.none && currentJob != Job.remove} onClick={handleRemove} isLoader={currentJob == Job.remove} type="button" text="Удалить" />
+          <Button disabled={circles.length==0 || currentJob != Job.none} onClick={handleClear} type="button" text="Очистить" />
         </form>
 
         <div className={styles.circles}>
