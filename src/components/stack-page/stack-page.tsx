@@ -82,7 +82,7 @@ export const StackPage: React.FC = () => {
       <div className={styles.wrapper}>
         <form className={styles.form} onSubmit={(e)=>{e.preventDefault(); values['string'].length > 0 && handleAdd()}}>
           <Input isLimitText maxLength={4} name='string' onChange={handleChange} value={values['string']??''} placeholder="Введите текст" />
-          <Button disabled={values['string'] === '' || currentJob != Job.none && currentJob != Job.add} onClick={handleAdd} isLoader={currentJob == Job.add} type="button" text="Добавить" />
+          <Button disabled={values['string'] == undefined || values['string'].length < 1 || currentJob != Job.none && currentJob != Job.add} onClick={handleAdd} isLoader={currentJob == Job.add} type="button" text="Добавить" />
           <Button disabled={circles.length==0 || currentJob != Job.none && currentJob != Job.remove} onClick={handleRemove} isLoader={currentJob == Job.remove} type="button" text="Удалить" />
           <Button disabled={circles.length==0 || currentJob != Job.none} onClick={handleClear} type="button" text="Очистить" />
         </form>

@@ -79,7 +79,7 @@ const begin = async (e:React.FormEvent<HTMLFormElement>) =>{
               text = "Рассчитать"
               type = "submit"
               isLoader = { loader }
-              disabled = { !isValid }
+              disabled = { !isValid || values['number'] == undefined || (values['number'].length<1)}
         />
         </form>
         <div className = { styles.circles }>
