@@ -110,10 +110,11 @@ export class LinkedList<T> implements ILinkedList<T> {
 		let currentNode = this.head;
 		let currentIndex = 0;
 
-		while (currentIndex) {
+		while (currentIndex < index) {
 			currentNode = currentNode!.next;
 			currentIndex++;
 		}
+
 		return currentNode?.value??null;
 	};
 
