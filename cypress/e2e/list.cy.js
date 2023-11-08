@@ -74,7 +74,7 @@ describe("Стек", () => {
 
     cy.get(circlesSmallClass).should("have.css", "border-color", C_CH).contains("e5");
     cy.tick(DELAY_MS);
-    cy.get(circlesClass).not(`${circlesSmallClass}`).should("have.length", 4);
+    cy.get(circlesClass).not(circlesSmallClass).should("have.length", 4);
     cy.tick(DELAY_MS);
 
     cy.get(circlesClass).last().should("have.css", "border-color", C_M).contains("e5");
@@ -99,16 +99,16 @@ describe("Стек", () => {
     cy.tick(DELAY_MS);
 
     cy.get(circlesSmallClass).should("have.css", "border-color", C_CH).contains("e1");
-    cy.get(circlesClass).not(`${circlesSmallClass}`).should("have.length", 4);
-    cy.get(circlesClass).not(`${circlesSmallClass}`).eq(0).should("have.css", "border-color", C_CH).contains("3");
+    cy.get(circlesClass).not(circlesSmallClass).should("have.length", 4);
+    cy.get(circlesClass).not(circlesSmallClass).eq(0).should("have.css", "border-color", C_CH).contains("3");
 
     cy.tick(DELAY_MS);
 
-    cy.get(circlesClass).not(`${circlesSmallClass}`).eq(1).should("have.css", "border-color", C_CH).contains("2");
+    cy.get(circlesClass).not(circlesSmallClass).eq(1).should("have.css", "border-color", C_CH).contains("2");
 
     cy.tick(DELAY_MS);
 
-    cy.get(circlesClass).not(`${circlesSmallClass}`).eq(2).should("have.css", "border-color", C_D).contains("1");
+    cy.get(circlesClass).not(circlesSmallClass).eq(2).should("have.css", "border-color", C_D).contains("1");
 
     cy.tick(DELAY_MS);
     cy.get(circlesClass).eq(0).should("have.css", "border-color", C_D).contains("3");
@@ -131,10 +131,10 @@ describe("Стек", () => {
   it("Корректность удаления элемента из head", () => {
     cy.clock();
     cy.get("button:contains('Удалить из head')").click();
-    cy.get(circlesClass).not(`${circlesSmallClass}`).should("have.length", 4);
+    cy.get(circlesClass).not(circlesSmallClass).should("have.length", 4);
     cy.tick(DELAY_MS);
 
-    cy.get(circlesClass).not(`${circlesSmallClass}`).eq(0).should("have.text", "");
+    cy.get(circlesClass).not(circlesSmallClass).eq(0).should("have.text", "");
 
     cy.get(circlesSmallClass).contains("3");
 
@@ -149,10 +149,10 @@ describe("Стек", () => {
   it("Корректность удаления элемента из tail", () => {
     cy.clock();
     cy.get("button:contains('Удалить из tail')").click();
-    cy.get(circlesClass).not(`${circlesSmallClass}`).should("have.length", 4);
+    cy.get(circlesClass).not(circlesSmallClass).should("have.length", 4);
     cy.tick(DELAY_MS);
 
-    cy.get(circlesClass).not(`${circlesSmallClass}`).eq(3).should("have.text", "");
+    cy.get(circlesClass).not(circlesSmallClass).eq(3).should("have.text", "");
 
     cy.get(circlesSmallClass).contains("0");
 
