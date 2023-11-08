@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styles from './string.module.css';
 import { SolutionLayout } from "../ui/solution-layout/solution-layout";
 import { Input } from "../ui/input/input";
@@ -15,9 +15,14 @@ interface ICharStatePair {
 
 export const StringComponent: React.FC = () => {
 
-    const {values, handleChange} = useFormAndValidation();
+    const {values,isValid, handleChange, setValues} = useFormAndValidation();
     const [loader, setLoader] = useState(false);
     const [circles, setCircles] = useState<ICharStatePair[]>([])
+
+  useEffect(()=>{
+    setValues({string:''});
+    return () =>{ setCircles([]); setValues({});};
+  },[]);
 
     async function begin(e:React.FormEvent<HTMLFormElement>) {
       e.preventDefault();
@@ -60,7 +65,7 @@ export const StringComponent: React.FC = () => {
       });
     }
 
-    async function modify(array:ICharStatePair[], start: number, end:number) {
+    const modify =(array:ICharStatePair[], start: number, end:number) => {
       
       let swapped = array[start].char;
       array[start] = {
@@ -79,13 +84,13 @@ export const StringComponent: React.FC = () => {
         <div className={styles.wrapper}>
 
             <form className={styles.form} onSubmit={begin}>
-                <Input name="string" value={values["string"]??""} maxLength={11} isLimitText={true} onChange={handleChange}/>
-                <Button type="submit" text="Развернуть" isLoader={loader} disabled = { values["string"]?.length < 2 }/>
+                <Input data-testid="input-string" name="string" value={values["string"]??""} maxLength={11} minLength={2} isLimitText={true} onChange={handleChange}/>
+                <Button data-testid="button-submit" type="submit" text="Развернуть" isLoader={loader} disabled = { values["string"]?.length < 2 }/>
             </form>
 
             <div className={styles.circles}>
                 {circles.map((item, i) => 
-                  <Circle key={i} letter={item.char} state={item.state}/>
+                  <div key={i} data-testid="circle"><Circle key={i} letter={item.char} state={item.state}/></div>
                 )}
             </div>
 

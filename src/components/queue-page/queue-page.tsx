@@ -16,9 +16,16 @@ interface ICircle {
   state: ElementStates;
 }
 
+enum Job {
+  none,
+  queue,
+  dequeue
+}
+
 export const QueuePage: React.FC = () => {
   const queueSize = 7;
   const { values, handleChange, setValues } = useFormAndValidation();
+  const [currentJob, setCurrentJob] = useState<Job>(Job.none);
   const [circles, setCircles] = useState<ICircle[]>([]);
   const [queue] = useState<Queue<string>>(new Queue<string>(queueSize));
 
@@ -52,6 +59,7 @@ export const QueuePage: React.FC = () => {
   }
 
   const handleEnqueue = async () => {
+    setCurrentJob(Job.queue);
     const tailIndex = !queue.isEmpty() ? queue.getTail().index : 0;
 
     if (tailIndex + 1 != queueSize) {
@@ -83,10 +91,12 @@ export const QueuePage: React.FC = () => {
       await setCirclesWithDelay([...circles]);
 
     }
+    setCurrentJob(Job.none);
 
   };
 
   const handleDequeue = async () => {
+    setCurrentJob(Job.dequeue);
 
     if (queue.getHead().index === queue.getTail().index) {
       circles[queue.getHead().index].state = ElementStates.Changing;
@@ -112,12 +122,19 @@ export const QueuePage: React.FC = () => {
     circles[queue.getHead().index].string = queue.getHead().value || '';
     circles[queue.getHead().index].head = true;
 
-    await setCirclesWithDelay([...circles]);
+    await setCirclesWithDelay([...circles]).then(()=>{
+      setCurrentJob(Job.none);
+
+    });
+
+
   };
 
   const handleClear = () => {
     queue.clear();
     setCircles(makeEmptyCircles());
+    setCurrentJob(Job.none);
+
   };
 
 
@@ -126,9 +143,9 @@ export const QueuePage: React.FC = () => {
       <div className={styles.wrapper}>
         <form className={styles.form} onSubmit={handleSubmit}>
           <Input isLimitText maxLength={4} onChange={handleChange} name="string" value={values['string'] ?? ''} placeholder="Введите текст" />
-          <Button disabled={values['string'] === ''} onClick={handleEnqueue} isLoader={false} type="button" text="Добавить" />
-          <Button disabled={queue.isEmpty()} onClick={handleDequeue} isLoader={false} type="button" text="Удалить" />
-          <Button disabled={queue.isEmpty()} onClick={handleClear} isLoader={false} type="button" text="Очистить" />
+          <Button disabled={values['string'] === '' || currentJob != Job.none && currentJob != Job.queue} onClick={handleEnqueue} isLoader={currentJob == Job.queue} type="button" text="Добавить" />
+          <Button disabled={queue.isEmpty() || currentJob != Job.none && currentJob != Job.dequeue} onClick={handleDequeue} isLoader={currentJob == Job.dequeue} type="button" text="Удалить" />
+          <Button disabled={queue.isEmpty() || currentJob != Job.none} onClick={handleClear} isLoader={false} type="button" text="Очистить" />
         </form>
         <ul className={styles.circles}>
           {circles.map((item, index) => (

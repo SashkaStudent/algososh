@@ -25,10 +25,11 @@ interface INumberStatePair {
 export const SortingPage: React.FC = () => {
   const { values, handleChange, setValues } = useFormAndValidation();
   const [columns, setColumns] = useState<INumberStatePair[]>([]);
-  const [currentJob, setCurrentJob] = useState< "none" | Direction>("none");
+  const [currentJob, setCurrentJob] = useState<"none" | Direction>("none");
 
   useEffect(() => {
     setValues({ sortType: SortType.select });
+    makeNewArray();
   }, []);
 
 
@@ -48,7 +49,7 @@ export const SortingPage: React.FC = () => {
     }
   }
 
-  const setColumnsWithDelay = async (array: INumberStatePair[], ms:number = SHORT_DELAY_IN_MS) => {
+  const setColumnsWithDelay = async (array: INumberStatePair[], ms: number = SHORT_DELAY_IN_MS) => {
 
     return new Promise(resolve => {
       setTimeout(() => {
@@ -93,7 +94,7 @@ export const SortingPage: React.FC = () => {
 
         array[j].state = ElementStates.Default;
         array[j + 1].state = ElementStates.Default;
-  
+
       }
 
       array[n - i - 1].state = ElementStates.Modified;
@@ -118,7 +119,7 @@ export const SortingPage: React.FC = () => {
       array[i].state = ElementStates.Changing;
 
 
-      for (j = i + 1; j < n; j++){
+      for (j = i + 1; j < n; j++) {
         array[j].state = ElementStates.Changing;
         await setColumnsWithDelay(array);
         if (direction === Direction.Ascending ?
@@ -129,9 +130,9 @@ export const SortingPage: React.FC = () => {
 
       }
 
-      
+
       array[i].state = ElementStates.Default;
-      
+
       let temp = array[minIndex];
       array[minIndex] = array[i];
       array[i] = temp;
@@ -147,7 +148,7 @@ export const SortingPage: React.FC = () => {
 
   return (
     <SolutionLayout title="Сортировка массива">
-      <div className={styles.wrapper}>
+      <div data-testid="sorting-page" className={styles.wrapper}>
         <form className={styles.form}>
           <div className={styles.radioWrapper}>
             <RadioInput
@@ -165,40 +166,42 @@ export const SortingPage: React.FC = () => {
             />
           </div>
           <div className={styles.sorting}>
-            <Button
+            <Button data-testid="asc-button"
               text="По возрастанию"
               sorting={Direction.Descending}
               onClick={() => begin(Direction.Ascending)}
               isLoader={currentJob == Direction.Ascending}
-              disabled= {currentJob!="none" && currentJob!= Direction.Ascending}
+              disabled={currentJob != "none" && currentJob != Direction.Ascending}
               extraClass={styles.button}
             />
-            <Button
+            <Button data-testid="desc-button"
               text="По убыванию"
               sorting={Direction.Ascending}
               onClick={() => begin(Direction.Descending)}
               isLoader={currentJob == Direction.Descending}
-              disabled= {currentJob!="none" && currentJob!= Direction.Descending}
+              disabled={currentJob != "none" && currentJob != Direction.Descending}
               extraClass={styles.button}
             />
           </div>
 
           <Button
+            data-testid="make-new-array-button"
             text="Новый массив"
             onClick={makeNewArray}
             extraClass={styles.button}
-            disabled= {currentJob!="none"}
+            disabled={currentJob != "none"}
           />
         </form>
-        <div className={styles.columns}>
+        <div data-testid="columns" className={styles.columns}>
           {columns.map((element, i) => {
             return (
-              <Column
-                index={element.value}
-                state={element.state}
-                key={i}
-                extraClass={styles.column}
-              />
+              <div data-testid="column" key={i}>
+                <Column
+                  index={element.value}
+                  state={element.state}
+                  extraClass={styles.column}
+                />
+              </div>
             );
           })}
         </div>
