@@ -1,11 +1,11 @@
-import { COLOR_CHANGING as C_CH, COLOR_DEFAULT as C_D, COLOR_MODIFIED as C_M, host } from "../utils/constants";
+import { COLOR_CHANGING as C_CH, COLOR_DEFAULT as C_D } from "../utils/constants";
 const DELAY_MS = 500;
 const circlesClass = `div[class*="circle_circle"]`;
 const circlesClassContent = `div[class*="circle_content"]`;
 
 describe("Стек", () => {
   beforeEach(() => {
-    cy.visit(`${host}/queue`);
+    cy.visit(`${cy.config('baseUrl')}/queue`);
   });
 
   it("Кнопка Добавить имеет состояние disable, если в строке ввода пусто", () => {

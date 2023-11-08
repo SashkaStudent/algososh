@@ -1,4 +1,4 @@
-import { COLOR_CHANGING as C_CH, COLOR_DEFAULT as C_D, COLOR_MODIFIED as C_M, host } from "../utils/constants";
+import { COLOR_CHANGING as C_CH, COLOR_DEFAULT as C_D, COLOR_MODIFIED as C_M } from "../utils/constants";
 const DELAY_MS = 1000;
 const circlesClass = `div[class*="circle_circle"]`;
 const circlesSmallClass = `div[class*="circle_small"]`;
@@ -6,7 +6,7 @@ const circlesClassContent = `div[class*="circle_content"]`;
 
 describe("Стек", () => {
   beforeEach(() => {
-    cy.visit(`${host}/list`);
+    cy.visit(`${cy.config('baseUrl')}/list`);
   });
 
   it("Кнопки в состоянии disable, если в строке ввода значения и индекса пусто", () => {

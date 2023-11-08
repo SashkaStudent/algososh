@@ -1,10 +1,8 @@
-import { circles, host } from "../utils/constants.js";
-
 const SHORT_DELAY_MS = 600;
 const circlesClass = `div[class*="circle_circle"]`;
 describe("Последовательность Фибоначчи", () => {
   beforeEach(() => {
-    cy.visit(`${host}/fibonacci`);
+    cy.visit(`${cy.config('baseUrl')}/fibonacci`);
   });
 
   it("Кнопка Рассчитать имеет состояние disable, если в строке ввода пусто", () => {
@@ -13,37 +11,19 @@ describe("Последовательность Фибоначчи", () => {
   });
 
   it("Последовательность длинной 5 генерируется корректно", () => {
+    cy.clock();
+    const indexes = [0,1,2,3,4];
+    const fib = [1,1,2,3,5]
+
     cy.get("input").type("5").should("have.value", "5")
     cy.get('button[type=submit]').click()
 
-    cy.wait(SHORT_DELAY_MS)
-    cy.get(circlesClass)
-      .should("have.length", 1)
-      .eq(0)
-      .contains("1")
-
-    cy.wait(SHORT_DELAY_MS)
-    cy.get(circlesClass)
-      .should("have.length", 2)
-      .eq(1)
-      .contains("1")
-
-    cy.wait(SHORT_DELAY_MS)
-    cy.get(circlesClass)
-      .should("have.length", 3)
-      .eq(2)
-      .contains("2")
-
-    cy.wait(SHORT_DELAY_MS)
-    cy.get(circlesClass)
-      .should("have.length", 4)
-      .eq(3)
-      .contains("3")
-
-    cy.wait(SHORT_DELAY_MS)
-    cy.get(circlesClass)
-      .should("have.length", 5)
-      .eq(4)
-      .contains("5")
+    cy.get(indexes).each(i=>{
+      cy.tick(SHORT_DELAY_MS)
+      cy.get(circlesClass)
+        .should("have.length", i+1)
+        .eq(i)
+        .contains(fib[i])
+    });
   });
 });

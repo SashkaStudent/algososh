@@ -1,11 +1,11 @@
-import { COLOR_CHANGING as C_CH, COLOR_DEFAULT as C_D, COLOR_MODIFIED as C_M, host } from "../utils/constants";
+import { COLOR_CHANGING as C_CH, COLOR_DEFAULT as C_D, COLOR_MODIFIED as C_M } from "../utils/constants";
 const DELAY_MS = 1000;
 const circlesClass = `div[class*="circle_circle"]`;
 
 
 describe("Разворот строки", () => {
   beforeEach(() => {
-    cy.visit(`${host}/recursion`);
+    cy.visit(`${cy.config('baseUrl')}/recursion`);
   });
 
   it("Кнопка Развернуть имеет состояние disable, если в строке ввода пусто", () => {
@@ -24,7 +24,7 @@ describe("Разворот строки", () => {
   it("Разворот строки WORLD осуществляется корректно", () => {
 
     const string = "world";
-    let items = [
+    const items = [
       lettersAndColors("world", [C_CH, C_D, C_D, C_D, C_CH]),
       lettersAndColors("dorlw", [C_M, C_CH, C_D, C_CH, C_M]),
       lettersAndColors("dlrow", [C_M, C_M, C_CH, C_M, C_M]),
